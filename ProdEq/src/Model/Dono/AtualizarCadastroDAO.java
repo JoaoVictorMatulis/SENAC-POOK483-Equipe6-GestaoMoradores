@@ -40,14 +40,6 @@ public class AtualizarCadastroDAO {
 
     public void atualizar(String[] dados){
         try {
-            /*dados[0] = this.dados[0];
-                dados[1] = tnome.getText();
-                dados[2] = tap.getText();
-                dados[3] = tbloco.getText();
-                dados[4] = tcpf.getText();
-                dados[5] = tfone.getText();
-                dados[6] = temail.getText();
-                dados[7] = String.valueOf(tsenha.getPassword());*/
             String minhaquery = "update pessoa set nome_pessoa = '"+dados[1]+"', senha = '"+dados[7]+"', ap = '"+dados[2]+"', bloco = '"+dados[3]+"', cpf = '"+dados[4]+"', fone = '"+dados[5]+"', email = '"+dados[6]+"' where id_pessoa = '"+dados[0]+"'; ";
             ConectarBD.getStatement().executeUpdate(minhaquery);
         } catch (SQLException e) {

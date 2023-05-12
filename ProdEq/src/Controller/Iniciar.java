@@ -18,6 +18,5 @@ public class Iniciar {
     public Iniciar(){
         new ConectarBD();
         new SenhaView();
-        JOptionPane.showMessageDialog(null,"BOTÕES EM CINZA NÃO ESTÃO FUNCIONAIS\n(NÃO TEM COMUNICAÇÃO COM O BANCO DE DADOS)\nPROPOSITO MERAMENTE ILUSTRATIVO");
     }
 }

@@ -19,7 +19,8 @@ public class ExibirMoradoresController {
         new ExibirMoradores(dao.listar());
     }
 
-    public void viewEsp(){
-        
+    public String[] viewEsp(int id){
+        ExibirMoradoresDAO dao = new ExibirMoradoresDAO();
+        return dao.exibirDados(id);
     }
 }

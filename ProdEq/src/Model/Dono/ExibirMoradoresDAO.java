@@ -56,4 +56,27 @@ public class ExibirMoradoresDAO {
         }
         return tamanho;
     }
+
+    public String[] exibirDados(int id) {
+        String[] resultados = null;
+        try {
+            resultados = new String[7];
+            String minhaQuery = "SELECT * FROM pessoa where id_pessoa = '"+id+"'";
+            ResultSet result = ConectarBD.getStatement().executeQuery(minhaQuery);
+            int coluna = 0;
+            if (result.next()) {
+                resultados[coluna++] = result.getString("id_pessoa");
+                resultados[coluna++] = result.getString("nome_pessoa");
+                resultados[coluna++] = result.getString("ap");
+                resultados[coluna++] = result.getString("bloco");
+                resultados[coluna++] = result.getString("cpf");
+                resultados[coluna++] = result.getString("fone");
+                resultados[coluna++] = result.getString("email");
+                return resultados;
+            }
+        } catch (Exception e) {
+            System.out.println("Erro na Inclusao: " + e.getMessage());
+        }
+        return resultados;
+    }
 }

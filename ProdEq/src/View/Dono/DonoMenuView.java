@@ -11,11 +11,7 @@ package View.Dono;
 
 import javax.swing.*;
 
-import Controller.Dono.AtualizarCadastroController;
-import Controller.Dono.CriarAcessoController;
-import Controller.Dono.ExibirMoradoresController;
-import Controller.Dono.ExibirRegistrosController;
-import Controller.Dono.RemoverCadastroIdController;
+import Controller.Dono.*;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -56,7 +52,7 @@ public class DonoMenuView extends JFrame implements ActionListener{
         VerMoradores = criarButton("Exibir Moradores",Color.white);
         add(VerMoradores);
 
-        verMoradorEsp = criarButton("Exibir Morador Especifíco",Color.gray);
+        verMoradorEsp = criarButton("Exibir Morador Especifíco",Color.white);
         add(verMoradorEsp);
 
         verRegistros = criarButton("Exibir Registros E/S",Color.white);
@@ -106,11 +102,17 @@ public class DonoMenuView extends JFrame implements ActionListener{
             controller.viewRegistros();
         }
         if(e.getSource() == verMoradorEsp){
-            int id = Integer.parseInt(JOptionPane.showInputDialog(rootPane, "Digite o id do morador: "));
-            if(id == 1){
-                JOptionPane.showMessageDialog(rootPane, "ID: 1 - Nome: Jonas| Ap: 203 | Bloco: 2 | CPF: 108329123 | Telefone: 3123123 | Email: teste@gmail.com");
-            }else{
-                JOptionPane.showMessageDialog(rootPane, "Id inválido");
+            try {
+                int id = Integer.parseInt(JOptionPane.showInputDialog(rootPane, "Digite o id do morador: "));
+                ExibirMoradoresController controller = new ExibirMoradoresController();
+                String[] dados = controller.viewEsp(id);
+                if(dados[0] == null){
+                    JOptionPane.showMessageDialog(rootPane, "Id inválido");
+                }else{
+                    int coluna = 0;
+                    JOptionPane.showMessageDialog(rootPane, "ID: "+ dados[coluna++] + " - Nome: "+dados[coluna++]+" | Apartamento: "+dados[coluna++]+" | Bloco: "+dados[coluna++]+" | CPF: "+dados[coluna++]+" | Fone: "+dados[coluna++]+" | Email: "+dados[coluna]);
+                }
+            } catch (Exception a) {
             }
         }
         if(e.getSource() == VerMoradores){

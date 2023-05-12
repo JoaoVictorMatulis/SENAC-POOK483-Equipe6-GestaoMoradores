@@ -15,40 +15,46 @@ import java.awt.*;
 import java.awt.event.*;
 
 public class ExibirRegistros extends JFrame implements ActionListener{
-    JPanel p1,p2,p3;
-    JLabel label1, label2, label3, label4, label5;
+    JPanel p1,p2;
+    JLabel[] label;
     JButton menu, anterior, proximo;
-    int contador = 1;
-    int numero = 1;
-    public ExibirRegistros() {
-        setTitle("Exibir Registros");
+    int contadorElementosTela = 5, tela = 1;
+    int linha = 0;
+    int coluna = 0;
+    String[][] result;
+    public ExibirRegistros(String[][] result) {
+        this.result = result;
+        label = new JLabel[result.length];
+        setTitle("Exibir Moradores");
         Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
-        setSize(((int)screen.getWidth()/2)-200, ((int)screen.getHeight()/2)-200);
+        setSize(((int)screen.getWidth()/2)-100, ((int)screen.getHeight()/2)-100);
         getContentPane().setLayout(new GridLayout(3, 1, 0, 0));
         getContentPane().setBackground(Color.white);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
         menu = criarButton("Menu");
         
-        label1 = criarLabel("1");
-        label2 = criarLabel("2");
-        label3 = criarLabel("3");
-        label4 = criarLabel("4");
-        label5 = criarLabel("5");
-        
         anterior = criarButton("Anterior");
+        anterior.setEnabled(false);
         proximo = criarButton("Proximo");
-
-        BorderLayout gl3 = new BorderLayout(5, 0);
-        p3 = criarPainel(Color.white, gl3, menu);
-
+        if(label.length>5){
+            proximo.setEnabled(true);
+        }else{
+            proximo.setEnabled(false);
+        }
         GridLayout gl1 = new GridLayout(5, 1, 0, 0);
-        p1 = criarPainel(Color.white, gl1, label1);
-        p1.add(label2);
-        p1.add(label3);
-        p1.add(label4);
-        p1.add(label5);
-        
+        p1 = criarPainel(Color.white, gl1, anterior);
+        if(label.length<=5){
+            for(int i = 0; i < label.length;i++){
+                label[i] = criarLabel(leitor(linha++, coluna));
+                p1.add(label[i]);
+            }
+        }else{
+            for(int i = 0; i < 5;i++){
+                label[i] = criarLabel(leitor(linha++, coluna));
+                p1.add(label[i]);
+            }
+        }
 		GridLayout gl2 = new GridLayout(1, 2, 0, 0);
         p2 = criarPainel(Color.white, gl2, anterior);
         p2.add(proximo);
@@ -72,29 +78,11 @@ public class ExibirRegistros extends JFrame implements ActionListener{
     public JLabel criarLabel(String texto) {
         JLabel l1 = new JLabel(texto);
         l1.setHorizontalAlignment(SwingConstants.CENTER);
-        l1.setFont(new Font("Arial", Font.BOLD, 24));
+        l1.setFont(new Font("Arial", Font.BOLD, 18));
         add(l1);
         return l1;
     }
-
-    private JPanel criarPainel(Color cor, GridLayout gl, JLabel label1) {
-        JPanel p1 = new JPanel();
-		p1.setLayout(gl);
-		p1.setBackground(cor);
-		p1.add(label1);
-		add(p1);
-		return p1;
-	}
-
-    private JPanel criarPainel(Color cor, BorderLayout bl, JButton botao1) {
-        JPanel p1 = new JPanel();
-		p1.setLayout(bl);
-		p1.setBackground(cor);
-		p1.add(botao1);
-		add(p1);
-		return p1;
-	}
-
+    
     private JPanel criarPainel(Color cor, GridLayout gl, JButton botao1) {
         JPanel p1 = new JPanel();
 		p1.setLayout(gl);
@@ -114,21 +102,43 @@ public class ExibirRegistros extends JFrame implements ActionListener{
 
     public void actionPerformed(ActionEvent e) {
         if(e.getSource() == proximo){
-            label1.setText(Integer.toString(numero++));
-            label2.setText(Integer.toString(numero++));
-            label3.setText(Integer.toString(numero++));
-            label4.setText(Integer.toString(numero++));
-            label5.setText(Integer.toString(numero++));
-            contador++;
+            p1.removeAll();
+            p1.revalidate();
+            p1.repaint();
+            anterior.setEnabled(true);
+            if(label.length-(contadorElementosTela*tela) <= 5){
+                for(int i = 0; i < (label.length-(contadorElementosTela*tela));i++){
+                    label[i+(contadorElementosTela*tela)] = criarLabel(leitor(linha++, coluna));
+                    p1.add(label[i+(contadorElementosTela*tela)]);
+                }
+                proximo.setEnabled(false);
+            }else{
+                for(int i = 0; i < 5;i++){
+                    label[i] = criarLabel(leitor(linha++, coluna));
+                    p1.add(label[i]);
+                }
+            }
+            tela++;
         }
         if(e.getSource() == anterior){
-            if(contador > 1){
-                label5.setText(Integer.toString(--numero));
-                label4.setText(Integer.toString(--numero));
-                label3.setText(Integer.toString(--numero));
-                label2.setText(Integer.toString(--numero));
-                label1.setText(Integer.toString(--numero));
-            contador--;
+            p1.removeAll();
+            p1.revalidate();
+            p1.repaint();
+            proximo.setEnabled(true);
+            tela--;
+            if((contadorElementosTela*tela)-6 >=0){
+                linha = (contadorElementosTela*tela)-6;
+                for(int i = (contadorElementosTela*tela)-6; i < ((contadorElementosTela*tela)-1);i++){
+                    label[i] = criarLabel(leitor(linha++, coluna));
+                    p1.add(label[i]);
+                }
+            }else{
+                linha = 0;
+                for(int i = 0; i < 5;i++){
+                    label[i] = criarLabel(leitor(linha++, coluna));
+                    p1.add(label[i]);
+                }
+                anterior.setEnabled(false);
             }
         }
         if(e.getSource() == menu){
@@ -136,5 +146,12 @@ public class ExibirRegistros extends JFrame implements ActionListener{
             new DonoMenuView();
         }
     }
+
+    public String leitor(int linha, int coluna){
+        if(result[linha][3] == null){
+            return ("ID do Registro: "+ result[linha][coluna++] + " - ID do Morador: "+result[linha][coluna++]+" | Entrada: "+result[linha][coluna++]+" | Saída: Ainda dentro da loja");
+        }
+        return ("ID do Registro: "+ result[linha][coluna++] + " - ID do Morador: "+result[linha][coluna++]+" | Entrada: "+result[linha][coluna++]+" | Saída: "+result[linha][coluna]);
+    } 
 }
 

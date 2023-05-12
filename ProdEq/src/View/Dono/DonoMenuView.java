@@ -14,6 +14,7 @@ import javax.swing.*;
 import Controller.Dono.AtualizarCadastroController;
 import Controller.Dono.CriarAcessoController;
 import Controller.Dono.ExibirMoradoresController;
+import Controller.Dono.ExibirRegistrosController;
 import Controller.Dono.RemoverCadastroIdController;
 
 import java.awt.*;
@@ -58,7 +59,7 @@ public class DonoMenuView extends JFrame implements ActionListener{
         verMoradorEsp = criarButton("Exibir Morador Especifíco",Color.gray);
         add(verMoradorEsp);
 
-        verRegistros = criarButton("Exibir Registros E/S",Color.gray);
+        verRegistros = criarButton("Exibir Registros E/S",Color.white);
         add(verRegistros);
 
         setVisible(true);
@@ -101,7 +102,8 @@ public class DonoMenuView extends JFrame implements ActionListener{
         }
         if(e.getSource() == verRegistros){
             setVisible(false);
-            new ExibirRegistros();
+            ExibirRegistrosController controller = new ExibirRegistrosController();
+            controller.viewRegistros();
         }
         if(e.getSource() == verMoradorEsp){
             int id = Integer.parseInt(JOptionPane.showInputDialog(rootPane, "Digite o id do morador: "));

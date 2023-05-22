@@ -8,8 +8,6 @@
     Professor: Carlos Veríssimo
  */
 package Controller.Dono;
-
-import Model.Dono.ExibirMoradoresDAO;
 import Model.Dono.RemoverCadastroIdDAO;
 import View.Dono.RemoverCadastroId;
 

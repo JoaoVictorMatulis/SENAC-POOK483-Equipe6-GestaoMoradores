@@ -11,6 +11,7 @@ package View.Dono;
 
 import javax.swing.*;
 
+import Controller.Dono.ExibirMoradoresController;
 import Controller.Dono.RemoverCadastroIdController;
 
 import java.awt.*;
@@ -83,13 +84,23 @@ public class RemoverCadastroId extends JFrame implements ActionListener{
     
     public void actionPerformed(ActionEvent e) {
         if(e.getSource() == ok){
-            int confirmacao = JOptionPane.showConfirmDialog(rootPane,"Confirmar Remoção?","Confirmação",2);
-            if(confirmacao == 0){
-                int id = Integer.parseInt(tid.getText());
+            try {
                 RemoverCadastroIdController controller = new RemoverCadastroIdController();
-                controller.removerAcesso(id);
-                setVisible(false);
-                new DonoMenuView();
+                String[] dados = controller.viewEsp(Integer.parseInt(tid.getText()));
+                if(dados[0] == null){
+                    JOptionPane.showMessageDialog(rootPane, "Id inválido");
+                }else{
+                    int coluna = 0;
+                    JOptionPane.showMessageDialog(rootPane, "ID: "+ dados[coluna++] + " - Nome: "+dados[coluna++]+" | Apartamento: "+dados[coluna++]+" | Bloco: "+dados[coluna++]+" | CPF: "+dados[coluna++]+" | Fone: "+dados[coluna++]+" | Email: "+dados[coluna]);
+                    int confirmacao = JOptionPane.showConfirmDialog(rootPane,"Confirmar Remoção?","Confirmação",2);
+                    if(confirmacao == 0){
+                        int id = Integer.parseInt(tid.getText());
+                        controller.removerAcesso(id);
+                        setVisible(false);
+                        new DonoMenuView();
+                    }
+                }
+            } catch (Exception a) {
             }
         }
         if(e.getSource() == cancelar){

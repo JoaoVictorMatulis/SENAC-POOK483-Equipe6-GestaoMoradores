@@ -9,6 +9,7 @@
  */
 package Controller.Dono;
 
+import Model.Dono.ExibirMoradoresDAO;
 import Model.Dono.RemoverCadastroIdDAO;
 import View.Dono.RemoverCadastroId;
 
@@ -21,5 +22,10 @@ public class RemoverCadastroIdController {
     public void removerAcesso(int id) {
         RemoverCadastroIdDAO dao = new RemoverCadastroIdDAO();
         dao.remover(id);
+    }
+
+    public String[] viewEsp(int id){
+        RemoverCadastroIdDAO dao = new RemoverCadastroIdDAO();
+        return dao.exibirDados(id);
     }
 }

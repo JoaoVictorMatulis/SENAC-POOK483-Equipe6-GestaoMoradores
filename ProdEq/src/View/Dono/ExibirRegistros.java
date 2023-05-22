@@ -19,43 +19,50 @@ public class ExibirRegistros extends JFrame implements ActionListener{
     JLabel[] label;
     JButton menu, anterior, proximo;
     int contadorElementosTela = 5, tela = 1;
+    int morador = 5;
     int linha = 0;
     int coluna = 0;
     String[][] result;
     public ExibirRegistros(String[][] result) {
         this.result = result;
         label = new JLabel[result.length];
+        for(int i = 0; i < result.length; i++){
+            label[i] = criarLabel(leitor(linha++, coluna));
+        }
         setTitle("Exibir Moradores");
         Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
         setSize(((int)screen.getWidth()/2)-100, ((int)screen.getHeight()/2)-100);
         getContentPane().setLayout(new GridLayout(3, 1, 0, 0));
         getContentPane().setBackground(Color.white);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        GridLayout gl1 = new GridLayout(5, 1, 0, 0);
+        GridLayout gl2 = new GridLayout(1, 2, 0, 0);
         
-        menu = criarButton("Menu");
-        
-        anterior = criarButton("Anterior");
+        menu = criarButton("Menu",'m');
+
+        anterior = criarButton("Anterior",'a');
         anterior.setEnabled(false);
-        proximo = criarButton("Proximo");
+        
+        proximo = criarButton("Proximo",'d');
+        //Se tiver mais de 5 moradores registrados, o botão proximo fica disponivel para ser clicado
         if(label.length>5){
             proximo.setEnabled(true);
         }else{
             proximo.setEnabled(false);
         }
-        GridLayout gl1 = new GridLayout(5, 1, 0, 0);
+
         p1 = criarPainel(Color.white, gl1, anterior);
+        //Verifica se tem mais de 5 morados para exibir na tela
         if(label.length<=5){
             for(int i = 0; i < label.length;i++){
-                label[i] = criarLabel(leitor(linha++, coluna));
                 p1.add(label[i]);
             }
         }else{
             for(int i = 0; i < 5;i++){
-                label[i] = criarLabel(leitor(linha++, coluna));
                 p1.add(label[i]);
             }
         }
-		GridLayout gl2 = new GridLayout(1, 2, 0, 0);
+
         p2 = criarPainel(Color.white, gl2, anterior);
         p2.add(proximo);
         setVisible(true);
@@ -79,7 +86,6 @@ public class ExibirRegistros extends JFrame implements ActionListener{
         JLabel l1 = new JLabel(texto);
         l1.setHorizontalAlignment(SwingConstants.CENTER);
         l1.setFont(new Font("Arial", Font.BOLD, 18));
-        add(l1);
         return l1;
     }
     
@@ -92,10 +98,11 @@ public class ExibirRegistros extends JFrame implements ActionListener{
 		return p1;
 	}
 
-    public JButton criarButton(String texto) {
+    public JButton criarButton(String texto, char botao) {
         JButton b1 = new JButton(texto);
         b1.addActionListener(this);
         b1.setFont(new Font("Arial", Font.BOLD, 24));
+        b1.setMnemonic(botao);
         add(b1);
         return b1;
     }
@@ -108,14 +115,13 @@ public class ExibirRegistros extends JFrame implements ActionListener{
             anterior.setEnabled(true);
             if(label.length-(contadorElementosTela*tela) <= 5){
                 for(int i = 0; i < (label.length-(contadorElementosTela*tela));i++){
-                    label[i+(contadorElementosTela*tela)] = criarLabel(leitor(linha++, coluna));
-                    p1.add(label[i+(contadorElementosTela*tela)]);
+                    p1.add(label[morador++]);
                 }
                 proximo.setEnabled(false);
-            }else{
+            }
+            else{
                 for(int i = 0; i < 5;i++){
-                    label[i] = criarLabel(leitor(linha++, coluna));
-                    p1.add(label[i]);
+                    p1.add(label[morador++]);
                 }
             }
             tela++;
@@ -126,19 +132,16 @@ public class ExibirRegistros extends JFrame implements ActionListener{
             p1.repaint();
             proximo.setEnabled(true);
             tela--;
-            if((contadorElementosTela*tela)-6 >=0){
-                linha = (contadorElementosTela*tela)-6;
-                for(int i = (contadorElementosTela*tela)-6; i < ((contadorElementosTela*tela)-1);i++){
-                    label[i] = criarLabel(leitor(linha++, coluna));
-                    p1.add(label[i]);
-                }
-            }else{
-                linha = 0;
-                for(int i = 0; i < 5;i++){
-                    label[i] = criarLabel(leitor(linha++, coluna));
-                    p1.add(label[i]);
+            morador = (contadorElementosTela * tela)-5;
+            if(tela == 1){
+                for(int i = 0; i < 5; i++){
+                    p1.add(label[morador++]);
                 }
                 anterior.setEnabled(false);
+            }else{
+                for(int i = 0; i<5;i++){
+                    p1.add(label[morador++]);
+                }                
             }
         }
         if(e.getSource() == menu){

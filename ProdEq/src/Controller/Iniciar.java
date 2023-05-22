@@ -9,8 +9,6 @@
  */
 package Controller;
 
-import javax.swing.JOptionPane;
-
 import Model.ConectarBD;
 import View.Morador.SenhaView;
 

@@ -11,7 +11,6 @@ package View.Dono;
 
 import javax.swing.*;
 
-import Controller.Dono.ExibirMoradoresController;
 import Controller.Dono.RemoverCadastroIdController;
 
 import java.awt.*;

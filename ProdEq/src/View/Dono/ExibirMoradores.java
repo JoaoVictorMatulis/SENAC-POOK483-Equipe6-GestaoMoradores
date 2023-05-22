@@ -16,6 +16,7 @@ import java.awt.event.*;
 
 public class ExibirMoradores extends JFrame implements ActionListener{
     JPanel p1,p2;
+    JScrollPane scroll;
     JLabel[] label;
     JButton menu, anterior, proximo;
     int contadorElementosTela = 5, tela = 1;
@@ -62,7 +63,8 @@ public class ExibirMoradores extends JFrame implements ActionListener{
                 p1.add(label[i]);
             }
         }
-
+        scroll = new JScrollPane(p1);
+        add(scroll);
         p2 = criarPainel(Color.white, gl2, anterior);
         p2.add(proximo);
         setVisible(true);
